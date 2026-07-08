@@ -1,4 +1,4 @@
-package com.smartcity.auth.dto;
+package com.smartcity.auth.dto.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

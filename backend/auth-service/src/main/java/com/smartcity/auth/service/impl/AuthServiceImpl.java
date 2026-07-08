@@ -2,11 +2,15 @@ package com.smartcity.auth.service.impl;
 
 import java.time.LocalDateTime;
 
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.smartcity.auth.dto.RegisterRequest;
-import com.smartcity.auth.dto.RegisterResponse;
+import com.smartcity.auth.dto.request.LoginRequest;
+import com.smartcity.auth.dto.request.RegisterRequest;
+import com.smartcity.auth.dto.response.LoginResponse;
+import com.smartcity.auth.dto.response.RegisterResponse;
 import com.smartcity.auth.entity.User;
 import com.smartcity.auth.enums.Role;
 import com.smartcity.auth.repository.UserRepository;
@@ -18,9 +22,26 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
+    private final AuthenticationManager authenticationManager;
+
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
+
+    @Override
+    public LoginResponse login(LoginRequest request) {
+
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getPassword()));
+
+        return LoginResponse.builder()
+                .accessToken("TEMP_TOKEN")
+                .tokenType("Bearer")
+                .expiresIn(3600L)
+                .build();
+    }
 
     @Override
     public RegisterResponse register(RegisterRequest request) {

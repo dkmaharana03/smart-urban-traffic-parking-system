@@ -1,4 +1,4 @@
-package com.smartcity.auth.dto;
+package com.smartcity.auth.dto.response;
 
 import java.util.UUID;
 
